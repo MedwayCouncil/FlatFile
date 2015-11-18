@@ -23,5 +23,7 @@
         /// <param name="stream">The stream.</param>
         /// <param name="entries">The entries.</param>
         void Write<TEntity>(Stream stream, IEnumerable<TEntity> entries) where TEntity : class, new();
+
+        void Write<TEntity>(TextWriter writer, IEnumerable<TEntity> entries) where TEntity : class, new();
     }
 }

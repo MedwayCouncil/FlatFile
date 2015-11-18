@@ -162,6 +162,25 @@ namespace FlatFile.Core.Base
             writer.Flush();
         }
 
+        public virtual void Write<TEntity>(TextWriter writer, IEnumerable<TEntity> entries) where TEntity : class, new()
+        {  
+
+            this.WriteHeader(writer);
+
+            int lineNumber = 0;
+
+            foreach (var entry in entries)
+            {
+                this.WriteEntry(writer, lineNumber, entry);
+
+                lineNumber += 1;
+            }
+
+            this.WriteFooter(writer);
+
+            writer.Flush();
+        }
+
         /// <summary>
         /// Writes the header.
         /// </summary>

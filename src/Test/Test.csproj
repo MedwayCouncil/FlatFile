@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="CtxBrRecord.cs" />
+    <Compile Include="Converters\DoubleConverter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleRecord.cs" />

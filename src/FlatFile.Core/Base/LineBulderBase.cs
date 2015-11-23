@@ -22,10 +22,23 @@ namespace FlatFile.Core.Base
         {
             if (fieldValue == null)
             {
-                return field.NullValue;
+                //NZ - null value should be padded, and therefore assigned to field value rather than returned
+                // return field.NullValue;
+                fieldValue = field.NullValue;
             }
 
             string lineValue = fieldValue.ToString();
+
+            //NZ - adding converter use
+            var converter = field.TypeConverter;
+            if (converter != null)
+            {
+                if(fieldValue != null && converter.CanConvertFrom(fieldValue.GetType()))
+                {
+                    lineValue = converter.ConvertToString(fieldValue);
+                }
+               
+            }
 
             lineValue = TransformFieldValue(field, lineValue);
 

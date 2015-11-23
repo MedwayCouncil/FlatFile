@@ -24,6 +24,7 @@ namespace FlatFile.FixedLength.Implementation
         {
             if (lineValue.Length >= field.Length)
             {
+                //NZ - trimming string of longer than fixedd length
                 return lineValue.Substring(0, field.Length);
             }
 

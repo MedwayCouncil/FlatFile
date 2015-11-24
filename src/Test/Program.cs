@@ -8,6 +8,8 @@ using FlatFile.FixedLength;
 using FlatFile.FixedLength.Attributes;
 using System.Text;
 using System.Linq;
+using Test.Models.iWorld.CtxBr;
+using Test.Models.Integra;
 
 namespace Test
 {
@@ -16,73 +18,69 @@ namespace Test
     {
         static void Main(string[] args)
         {
+            //WriteiWorldFile();
+            WriteIntegraFile();
+
+            Console.ReadLine();
+
+
+        }
+
+        public static void WriteiWorldFile()
+        {
             IFlatFileEngineFactory<ILayoutDescriptor<IFixedFieldSettingsContainer>, IFixedFieldSettingsContainer> fileEngineFactory;
-            var sampleRecords = GetRecords();
 
             var ctxBrRecords = GetCtxBrRecords();
-            //var factory = new FixedLengthFileEngineFactory();
-            //using (var stream = new MemoryStream())
-            //using (TextWriter writer = new StreamWriter(stream))
-            //{
-            //    //writer.WriteLine("header here..");
-            //   // writer.Flush();
-            //    fileEngineFactory = new FixedLengthFileEngineFactory();
-            //    var flatFileEngine = fileEngineFactory.GetEngine<SampleRecord>();
-
-            //    flatFileEngine.Write<SampleRecord>(writer, sampleRecords);
-
-            //    var fileStream = new FileStream(@"C:\Repos\Medway\FlatFile\src\Test\file2.txt", FileMode.Create, FileAccess.Write);
-            //    stream.WriteTo(fileStream);
-            //    //writer.Write()
-
-            //    var records = flatFileEngine.Read<SampleRecord>(stream).ToArray();
-            //}
-
-           // using (var stream = new MemoryStream())
-            using (TextWriter writer = new StreamWriter(@"C:\Repos\Medway\FlatFile\src\Test\file6.txt"))
+            string fileName = @"C:\Repos\Medway\FlatFile\src\Test\iWorld1.txt";
+            using (TextWriter writer = new StreamWriter(fileName))
             {
                 //C_CTFX_260815_062132
-                writer.WriteLine("C_CTFX_260815_062132".PadRight(151,' '));
+                writer.WriteLine("C_CTFX_260815_062132".PadRight(151, ' '));
                 //writer.Flush();
-
 
                 fileEngineFactory = new FixedLengthFileEngineFactory();
                 var flatFileEngine = fileEngineFactory.GetEngine<CtxBrRecord>();
 
                 flatFileEngine.Write<CtxBrRecord>(writer, ctxBrRecords);
 
-                //var fileStream = new FileStream(@"C:\Repos\Medway\FlatFile\src\Test\file2.txt", FileMode.Create, FileAccess.Write);
-                //stream.WriteTo(fileStream);
-                //writer.Write()
 
-                //var records = flatFileEngine.Read<SampleRecord>(stream).ToArray();
             }
 
-            //string[] lines = { "First line", "Second line", "Third line" };
-            //// WriteAllLines creates a file, writes a collection of strings to the file,
-            //// and then closes the file.  You do NOT need to call Flush() or Close().
-            //File.WriteAllLines(@"C:\testfile.txt", lines);
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                fileEngineFactory = new FixedLengthFileEngineFactory();
+                var flatFileEngine1 = fileEngineFactory.GetEngine<CtxBrRecord>(hasHeader: true);
 
-            //string[] readlines = System.IO.File.ReadAllLines(@"C:\testfile.txt");
-            //string text = System.IO.File.ReadAllText(@"C:\Repos\Medway\FlatFile\src\Test\file5.txt");
+                var records = flatFileEngine1.Read<CtxBrRecord>(fileStream).ToArray();
+            }
+
+        }
+
+        public static void WriteIntegraFile()
+        {
+            IFlatFileEngineFactory<ILayoutDescriptor<IFixedFieldSettingsContainer>, IFixedFieldSettingsContainer> fileEngineFactory;
+
+            var records = GetTotalsRecords();
+            string fileName = @"C:\Repos\Medway\FlatFile\src\Test\Integra.txt";
+
+            using (TextWriter writer = new StreamWriter(fileName))
+            {
+
+                fileEngineFactory = new FixedLengthFileEngineFactory();
+                var flatFileEngine = fileEngineFactory.GetEngine<FundTotalRecord>();
+
+                flatFileEngine.Write<FundTotalRecord>(writer, records);
 
 
-            //using (StreamWriter file = new StreamWriter(@"C:\testfile1.txt"))
-            //{
-            //    foreach (string line in lines)
-            //    {
-            //        // If the line doesn't contain the word 'Second', write the line to the file.
-            //        if (!line.Contains("Second"))
-            //        {
-            //            file.WriteLine(line);
-            //        }
-            //    }
-            //}
+            }
 
-            //string text1= File.ReadAllText(@"C:\testfile1.txt");
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                fileEngineFactory = new FixedLengthFileEngineFactory();
+                var flatFileEngine1 = fileEngineFactory.GetEngine<FundTotalRecord>();
 
-            Console.ReadLine();
-
+                var recordsRead = flatFileEngine1.Read<FundTotalRecord>(fileStream).ToArray();
+            }
 
         }
 
@@ -105,6 +103,34 @@ namespace Test
             return list;
 
             
+        }
+
+        private static List<FundTotalRecord> GetTotalsRecords()
+        {
+            List<FundTotalRecord> list = new List<FundTotalRecord>();
+
+            //201505    20150810X8000B8000000000        01 Council Tax exGBC                                                  -00107336.58
+            //201505    20150810X5400B8000000000        07 Housing Rents                                                      -00017091.55
+            //201505    201508104R54250003000000        15 First Sundry Debtor                                                -00004081.18
+            //201505    20150810X8002B8000000000        02 Council Tax exRUMCC                                                -00058876.10
+            //201505    20150810X0310B5000000000        Daily Cash Total 20150810                                             000454587.60
+
+
+            FundTotalRecord rec = new FundTotalRecord();
+            rec.Year = "2015";
+            rec.JournalPeriod = "05";
+            rec.JournalDate = DateTime.Parse("10 Aug 2015");
+            rec.GeneralLedgerCode = "X8000B8000000000";
+            rec.FundIndicator = "01";
+            rec.ServiceNameDescription = "Council Tax exGBC";
+            rec.TotalNetAmount = 7336.58;
+          
+           
+            list.Add(rec);
+
+            return list;
+
+
         }
 
         public static List<SampleRecord> GetRecords()

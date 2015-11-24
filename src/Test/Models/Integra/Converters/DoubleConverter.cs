@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Converters
+namespace Test.Integra.Converters
 {
     public class DoubleConverter : ITypeConverter
     {
         public bool CanConvertFrom(Type type)
         {
-            return type == typeof(double);
+            return type == typeof(string);
         }
 
         public bool CanConvertTo(Type type)
@@ -21,7 +21,7 @@ namespace Test.Converters
 
         public object ConvertFromString(string source)
         {
-            return double.Parse(source) > 0.0;
+            return double.Parse(source);
 
         }
 
@@ -29,11 +29,13 @@ namespace Test.Converters
         {
             if ((double)source > 0.0)
             {
-                return ((double)source).ToString("00000000000.00");
+                //if PaymentType=P then leading negative
+                return (-1*(double)source).ToString("0000000.00");
             }
             else
             {
-                return ((double)source).ToString("0000000000.00");
+                //if PaymentType=R then leading +
+                return (-1 * (double)source).ToString("00000000.00");
             }
         }
     }

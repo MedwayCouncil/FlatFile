@@ -33,7 +33,7 @@ namespace FlatFile.Core.Base
             var converter = field.TypeConverter;
             if (converter != null)
             {
-                if(fieldValue != null && converter.CanConvertFrom(fieldValue.GetType()))
+                if(fieldValue != null && converter.CanConvertTo(fieldValue.GetType()))
                 {
                     lineValue = converter.ConvertToString(fieldValue);
                 }

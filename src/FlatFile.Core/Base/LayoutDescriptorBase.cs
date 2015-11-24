@@ -23,5 +23,10 @@ namespace FlatFile.Core.Base
         }
 
         public bool HasHeader { get; protected internal set; }
+
+        internal void SetHeader(bool hasHeader)
+        {
+            HasHeader = hasHeader;
+        }
     }
 }

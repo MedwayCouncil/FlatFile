@@ -7,6 +7,7 @@ namespace FlatFile.FixedLength.Attributes
     using System;
     using FlatFile.Core;
     using FlatFile.FixedLength.Attributes.Infrastructure;
+    using Core.Base;
 
     /// <summary>
     /// Class FlatFileEngineFactoryExtensions.
@@ -22,12 +23,14 @@ namespace FlatFile.FixedLength.Attributes
         /// <returns>IFlatFileEngine.</returns>
         public static IFlatFileEngine GetEngine<TEntity>(
             this IFlatFileEngineFactory<ILayoutDescriptor<IFixedFieldSettingsContainer>, IFixedFieldSettingsContainer> engineFactory,
-            Func<string, Exception, bool> handleEntryReadError = null)
+            Func<string, Exception, bool> handleEntryReadError = null, bool hasHeader = false)
             where TEntity : class, new()
         {
             var descriptorProvider = new FixedLayoutDescriptorProvider();
 
             var descriptor = descriptorProvider.GetDescriptor<TEntity>();
+
+            ((LayoutDescriptorBase<IFixedFieldSettingsContainer>)descriptor).SetHeader(hasHeader);
 
             return engineFactory.GetEngine(descriptor, handleEntryReadError);
         }

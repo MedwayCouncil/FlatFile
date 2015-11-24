@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Converters
+namespace Test.iWorld.Converters
 {
     public class DateTimeConverter : ITypeConverter
     {
         public bool CanConvertFrom(Type type)
         {
-            return type == typeof(DateTime);
+            return type == typeof(string);
         }
 
         public bool CanConvertTo(Type type)

@@ -43,9 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\DateTimeConverter.cs" />
-    <Compile Include="CtxBrRecord.cs" />
-    <Compile Include="Converters\DoubleConverter.cs" />
+    <Compile Include="Models\Integra\Converters\DateTimeConverter.cs" />
+    <Compile Include="Models\Integra\Converters\DoubleConverter.cs" />
+    <Compile Include="Models\iWorld\Converters\DateTimeConverter.cs" />
+    <Compile Include="Models\iWorld\CtxBr\CtxBrRecord.cs" />
+    <Compile Include="Models\iWorld\Converters\DoubleConverter.cs" />
+    <Compile Include="Models\Integra\FundTotalRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleRecord.cs" />
